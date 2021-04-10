@@ -24,86 +24,6 @@ class CategoriaAtividadeComplementar(models.Model):
         return f"{self.macroatividades}"
 
 
-class Curso(models.Model):
-    external_id = models.UUIDField(default=uuid4, editable=False)
-    nome = models.CharField('Nome', max_length=55)
-    minimo_categorias = models.IntegerField('Quantidade Mínima de Categorias')
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = 'Curso'
-        verbose_name_plural = 'Cursos'
-
-    def __str__(self):
-        return f"{self.nome} / {self.minimo_categorias} / {self.create_at}"
-
-
-# Classe associativa
-class CategoriaCurso(models.Model):
-    external_id = models.UUIDField(default=uuid4, editable=False)
-    curso = models.ForeignKey(Curso, null=True, on_delete=models.DO_NOTHING)
-    categoria_atividade_complementar = models.ManyToManyField(CategoriaAtividadeComplementar)
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = 'Categoria Curso'
-        verbose_name_plural = 'Categorias Cursos'
-
-    def __str__(self):
-        return f"{self.categoria_atividade_complementar} "
-
-
-class Usuario(models.Model):
-    external_id = models.UUIDField(default=uuid4, editable=False)
-    nome = models.CharField('Nome', max_length=55)
-    sobrenome = models.CharField('Sobrenome', max_length=255)
-    email = models.EmailField('Email', max_length=255)
-    senha = models.CharField('Senha', max_length=55)
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = 'Usuário'
-        verbose_name_plural = 'Usuários'
-
-    def __str__(self):
-        return f"{self.id} / {self.nome} / {self.sobrenome} / {self.email} / {self.create_at}"
-
-
-class Aluno(Usuario):
-    matricula = models.CharField(unique=True, max_length=55)
-    curso = models.ForeignKey(Curso, on_delete=models.DO_NOTHING)
-
-    class Meta:
-        verbose_name = 'Aluno'
-        verbose_name_plural = 'Alunos'
-
-    def __str__(self):
-        return f"{self.matricula} / {self.nome} {self.sobrenome}"
-
-
-class AtividadeComplementar(models.Model):
-    external_id = models.UUIDField(default=uuid4, editable=False)
-    aluno = models.ForeignKey(Aluno, null=True, on_delete=models.DO_NOTHING)
-    descricao = models.CharField('Descrição', max_length=255)
-    empresa = models.CharField('Empresa/Instituição', max_length=55)
-    carga_horaria_informada = models.IntegerField('Carga Horária Informada')
-    carga_horaria_integralizada = models.IntegerField('Carga Horária Integralizada', null=True, blank=True)
-    certificado_img = models.FileField('Certificado', null=True, blank=True, upload_to=get_file_path)
-    categoria = models.ForeignKey(CategoriaCurso, null=True, on_delete=models.DO_NOTHING)
-    create_at = models.DateTimeField(auto_now_add=True)
-    update_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = 'Atividade Complementar'
-        verbose_name_plural = 'Atividades Complementares'
-
-    def __str__(self):
-        return f"{self.descricao} / {self.carga_horaria_informada}"
-
-
 class Estado(models.Model):
     external_id = models.UUIDField(default=uuid4, editable=False)
     uf = models.CharField('UF', unique=True, max_length=2)
@@ -147,4 +67,86 @@ class Campus(models.Model):
         verbose_name_plural = 'Campus'
 
     def __str__(self):
-        return f"{self.instituicao} / {self.logradouro} / {self.numero} / {self.cidade} / {self.estado}"
+        return f"{self.instituicao} / {self.cidade} / {self.estado}"
+
+
+class Curso(models.Model):
+    external_id = models.UUIDField(default=uuid4, editable=False)
+    nome = models.CharField('Nome', max_length=55)
+    minimo_categorias = models.IntegerField('Quantidade Mínima de Categorias')
+    campus = models.ForeignKey(Campus, on_delete=models.DO_NOTHING)
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Curso'
+        verbose_name_plural = 'Cursos'
+
+    def __str__(self):
+        return f"{self.nome} /  {self.campus} / {self.minimo_categorias}"
+
+
+# Classe associativa
+class CategoriaCurso(models.Model):
+    external_id = models.UUIDField(default=uuid4, editable=False)
+    curso = models.ForeignKey(Curso, null=True, on_delete=models.DO_NOTHING)
+    categoria_atividade_complementar = models.ManyToManyField(CategoriaAtividadeComplementar)
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Categoria Curso'
+        verbose_name_plural = 'Categorias Cursos'
+
+    def __str__(self):
+        return f"{self.categoria_atividade_complementar} "
+
+
+class Usuario(models.Model):
+    external_id = models.UUIDField(default=uuid4, editable=False)
+    nome = models.CharField('Nome', max_length=55)
+    sobrenome = models.CharField('Sobrenome', max_length=255)
+    email = models.EmailField('Email', max_length=255)
+    senha = models.CharField('Senha', max_length=55)
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Usuário'
+        verbose_name_plural = 'Usuários'
+
+    def __str__(self):
+        return f"{self.id} / {self.nome} / {self.sobrenome} / {self.email}"
+
+
+class Aluno(Usuario):
+    matricula = models.CharField(unique=True, max_length=55)
+    curso = models.ForeignKey(Curso, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        verbose_name = 'Aluno'
+        verbose_name_plural = 'Alunos'
+
+    def __str__(self):
+        return f"{self.matricula} / {self.nome} {self.sobrenome}"
+
+
+class AtividadeComplementar(models.Model):
+    external_id = models.UUIDField(default=uuid4, editable=False)
+    aluno = models.ForeignKey(Aluno, null=True, on_delete=models.DO_NOTHING)
+    descricao = models.CharField('Descrição', max_length=255)
+    empresa = models.CharField('Empresa/Instituição', max_length=55)
+    carga_horaria_informada = models.IntegerField('Carga Horária Informada')
+    carga_horaria_integralizada = models.IntegerField('Carga Horária Integralizada', null=True, blank=True)
+    justificativa = models.TextField('justificativa', max_length=500, blank=True, null=True)
+    certificado_img = models.FileField('Certificado', null=True, blank=True, upload_to=get_file_path)
+    categoria = models.ForeignKey(CategoriaCurso, null=True, on_delete=models.DO_NOTHING)
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Atividade Complementar'
+        verbose_name_plural = 'Atividades Complementares'
+
+    def __str__(self):
+        return f"{self.descricao} / {self.carga_horaria_informada}"

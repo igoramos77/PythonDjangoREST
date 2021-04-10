@@ -25,7 +25,7 @@ class InstituicaoAdmin(admin.ModelAdmin):
 
 @admin.register(Campus)
 class CampusAdmin(admin.ModelAdmin):
-    list_display = ('id', 'instituicao', 'logradouro', 'numero', 'estado', 'create_at')
+    list_display = ('instituicao', 'cidade', 'create_at')
 
 
 @admin.register(Curso)
