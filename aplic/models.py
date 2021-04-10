@@ -8,24 +8,6 @@ def get_file_path(_instance, filename):
     return filename
 
 
-class Livro(models.Model):
-    external_id = models.UUIDField(default=uuid4, editable=False)
-    title = models.CharField('Título', max_length=255)
-    author = models.CharField('Autor', max_length=255)
-    release_year = models.IntegerField('Ano')
-    state = models.CharField('Estado', max_length=50)
-    pages = models.IntegerField('Páginas')
-    publishing_company = models.CharField('Editora', max_length=255)
-    create_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = 'Livro'
-        verbose_name_plural = 'Livros'
-
-    def __str__(self):
-        return f"{self.id} / {self.title} / {self.release_year} / {self.create_at}"
-
-
 class CategoriaAtividadeComplementar(models.Model):
     external_id = models.UUIDField(default=uuid4, editable=False)
     macroatividades = models.CharField('Macroatividades', max_length=55)

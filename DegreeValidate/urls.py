@@ -7,7 +7,6 @@ from django.conf import settings
 from rest_framework import routers
 
 
-from aplic.api import viewsets as livrosviewsets
 from aplic.api import viewsets as usuario
 from aplic.api import viewsets as aluno
 from aplic.api import viewsets as instituicao
@@ -19,7 +18,6 @@ from aplic.api import viewsets as atividadecomplementar
 
 route = routers.DefaultRouter()
 
-route.register(r'books', livrosviewsets.BooksViewSet, basename="Livros")
 route.register(r'usuarios', usuario.UsuarioViewSet, basename="Usuarios")
 route.register(r'alunos', aluno.AlunoViewSet, basename="Alunos")
 route.register(r'instituicoes', instituicao.InstituicaoViewSet, basename="Instituicoes")

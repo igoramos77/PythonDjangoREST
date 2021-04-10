@@ -7,11 +7,6 @@ from aplic.api import serializers
 from aplic import models
 
 
-class BooksViewSet(viewsets.ModelViewSet):
-    queryset = models.Livro.objects.all()
-    serializer_class = serializers.LivroSerializer
-
-
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = models.Usuario.objects.all()
     serializer_class = serializers.UsuarioSerializer

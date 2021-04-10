@@ -1,11 +1,6 @@
 from django.contrib import admin
 
-from .models import Livro, Usuario, Aluno, Estado, Instituicao, Campus, Curso, CategoriaAtividadeComplementar, CategoriaCurso, AtividadeComplementar
-
-
-@admin.register(Livro)
-class LivroAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'author', 'create_at')
+from .models import Usuario, Aluno, Estado, Instituicao, Campus, Curso, CategoriaAtividadeComplementar, CategoriaCurso, AtividadeComplementar
 
 
 @admin.register(Usuario)
