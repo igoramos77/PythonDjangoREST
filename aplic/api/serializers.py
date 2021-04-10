@@ -46,6 +46,8 @@ class CategoriaAtividadeComplementarSerializer(serializers.ModelSerializer):
 
 
 class AtividadeComplementar(serializers.ModelSerializer):
+    aluno = AlunoSerializer(read_only=True, many=False)
+
     class Meta:
         model = models.AtividadeComplementar
         fields = '__all__'
