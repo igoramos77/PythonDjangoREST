@@ -1,4 +1,5 @@
 from django.urls import path, include
+from django.conf.urls import url
 from django.contrib import admin
 
 from django.conf.urls.static import static
@@ -14,6 +15,7 @@ from aplic.api import viewsets as campus
 from aplic.api import viewsets as curso
 from aplic.api import viewsets as categoriaatividadecomplementar
 from aplic.api import viewsets as atividadecomplementar
+from aplic.api import viewsets as empresa
 
 
 route = routers.DefaultRouter()
@@ -25,9 +27,11 @@ route.register(r'campus', campus.CampusViewSet, basename="Campus")
 route.register(r'cursos', curso.CursoViewSet, basename="Curso")
 route.register(r'categorias-atividades-complementares', categoriaatividadecomplementar.CategoriaAtividadeComplementarViewSet, basename="CategoriaAtividadesComplementares")
 route.register(r'atividades-complementares', curso.AtividadeComplementarViewSet, basename="AtividadeComplementar")
+route.register(r'empresa', empresa.EmpresaViewSet, basename="Empresa")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include(route.urls))
+    path('', include(route.urls)),
+    url(r'^chaining/', include('smart_selects.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

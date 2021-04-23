@@ -1,5 +1,6 @@
 from django.db import models
 from uuid import uuid4
+from smart_selects.db_fields import ChainedForeignKey
 
 
 def get_file_path(_instance, filename):
@@ -19,6 +20,7 @@ class CategoriaAtividadeComplementar(models.Model):
     class Meta:
         verbose_name = 'Categoria Atividade Complementar'
         verbose_name_plural = 'Categorias Atividades Complementares'
+        ordering = ['id']
 
     def __str__(self):
         return f"{self.macroatividades}"
@@ -32,9 +34,10 @@ class Estado(models.Model):
     class Meta:
         verbose_name = 'Estado'
         verbose_name_plural = 'Estados'
+        ordering = ['id']
 
     def __str__(self):
-        return f"{self.id} / {self.uf} / {self.estado}"
+        return f"{self.uf} / {self.estado}"
 
 
 class Instituicao(models.Model):
@@ -44,9 +47,10 @@ class Instituicao(models.Model):
     class Meta:
         verbose_name = 'Instituição'
         verbose_name_plural = 'Instituições'
+        ordering = ['id']
 
     def __str__(self):
-        return f"{self.id} / {self.nome}"
+        return f"{self.nome}"
 
 
 class Campus(models.Model):
@@ -65,6 +69,7 @@ class Campus(models.Model):
     class Meta:
         verbose_name = 'Campus'
         verbose_name_plural = 'Campus'
+        ordering = ['id']
 
     def __str__(self):
         return f"{self.instituicao} / {self.cidade} / {self.estado}"
@@ -81,12 +86,13 @@ class Curso(models.Model):
     class Meta:
         verbose_name = 'Curso'
         verbose_name_plural = 'Cursos'
+        ordering = ['id']
 
     def __str__(self):
         return f"{self.nome} /  {self.campus} / {self.minimo_categorias}"
 
 
-# Classe associativa
+#   Classe associativa
 class CategoriaCurso(models.Model):
     external_id = models.UUIDField(default=uuid4, editable=False)
     curso = models.ForeignKey(Curso, null=True, on_delete=models.DO_NOTHING)
@@ -97,9 +103,10 @@ class CategoriaCurso(models.Model):
     class Meta:
         verbose_name = 'Categoria Curso'
         verbose_name_plural = 'Categorias Cursos'
+        ordering = ['id']
 
     def __str__(self):
-        return f"{self.categoria_atividade_complementar} "
+        return f"{self.categoria_atividade_complementar}"
 
 
 class Usuario(models.Model):
@@ -114,9 +121,10 @@ class Usuario(models.Model):
     class Meta:
         verbose_name = 'Usuário'
         verbose_name_plural = 'Usuários'
+        ordering = ['id']
 
     def __str__(self):
-        return f"{self.id} / {self.nome} / {self.sobrenome} / {self.email}"
+        return f"{self.nome} / {self.sobrenome} / {self.email}"
 
 
 class Aluno(Usuario):
@@ -126,27 +134,44 @@ class Aluno(Usuario):
     class Meta:
         verbose_name = 'Aluno'
         verbose_name_plural = 'Alunos'
+        ordering = ['id']
 
     def __str__(self):
-        return f"{self.matricula} / {self.nome} {self.sobrenome}"
+        return f"{self.matricula} / {self.nome} / {self.sobrenome}"
+
+
+class Empresa(models.Model):
+    cnpj = models.IntegerField('CNPJ', primary_key=True)
+    razao_social = models.CharField('Razão Social', max_length=255)
+    nome_fantasia = models.CharField('Nome Fantasia', max_length=155, null=True, blank=True)
+    telefone = models.CharField('Telefone', max_length=16, null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'Empresa'
+        verbose_name_plural = 'Empresas'
+        ordering = ['razao_social']
+
+    def __str__(self):
+        return f"{self.cnpj} / {self.razao_social}"
 
 
 class AtividadeComplementar(models.Model):
     external_id = models.UUIDField(default=uuid4, editable=False)
-    aluno = models.ForeignKey(Aluno, null=True, on_delete=models.DO_NOTHING)
+    aluno = models.ForeignKey(Aluno, null=True, related_name='aluno', on_delete=models.DO_NOTHING)
+    categoria = models.ForeignKey(CategoriaAtividadeComplementar, on_delete=models.DO_NOTHING)
     descricao = models.CharField('Descrição', max_length=255)
-    empresa = models.CharField('Empresa/Instituição', max_length=55)
+    empresa = models.ForeignKey(Empresa, on_delete=models.DO_NOTHING)
     carga_horaria_informada = models.IntegerField('Carga Horária Informada')
     carga_horaria_integralizada = models.IntegerField('Carga Horária Integralizada', null=True, blank=True)
     justificativa = models.TextField('justificativa', max_length=500, blank=True, null=True)
     certificado_img = models.FileField('Certificado', null=True, blank=True, upload_to=get_file_path)
-    categoria = models.ForeignKey(CategoriaCurso, null=True, on_delete=models.DO_NOTHING)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Atividade Complementar'
         verbose_name_plural = 'Atividades Complementares'
+        ordering = ['id']
 
     def __str__(self):
         return f"{self.descricao} / {self.carga_horaria_informada}"

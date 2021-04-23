@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from .models import Usuario, Aluno, Estado, Instituicao, Campus, Curso, CategoriaAtividadeComplementar, CategoriaCurso, AtividadeComplementar
+from .models import \
+    Usuario, Aluno, Estado, Instituicao, Campus, Curso, CategoriaAtividadeComplementar, CategoriaCurso,\
+    AtividadeComplementar, Empresa
 
 
 @admin.register(Usuario)
@@ -46,3 +48,8 @@ class CategoriaCursoAdmin(admin.ModelAdmin):
 @admin.register(AtividadeComplementar)
 class AtividadeComplementarAdmin(admin.ModelAdmin):
     list_display = ('id', 'descricao', 'carga_horaria_informada', 'carga_horaria_integralizada', 'create_at')
+
+
+@admin.register(Empresa)
+class EmpresaAdmin(admin.ModelAdmin):
+    list_display = ('cnpj', 'razao_social')

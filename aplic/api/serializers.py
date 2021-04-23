@@ -3,6 +3,12 @@ from rest_framework import serializers
 from aplic import models
 
 
+class EmpresaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Empresa
+        fields = '__all__'
+
+
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Usuario
@@ -45,9 +51,17 @@ class CategoriaAtividadeComplementarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AtividadeComplementar(serializers.ModelSerializer):
+class AtividadeComplementarSerializer(serializers.ModelSerializer):
+    categoria = CategoriaAtividadeComplementarSerializer(read_only=True, many=False)
+    empresa = EmpresaSerializer(read_only=True, many=False)
     aluno = AlunoSerializer(read_only=True, many=False)
 
     class Meta:
         model = models.AtividadeComplementar
+        fields = '__all__'
+
+
+class EmpresaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Empresa
         fields = '__all__'

@@ -23,6 +23,12 @@ class AlunoViewSet(
     queryset = models.Aluno.objects.all()
     serializer_class = serializers.AlunoSerializer
 
+    @action(methods=['get'], detail=True)
+    def atividades_complementares(self, request, pk=None):
+        atividades_complementares = self.get_queryset().order_by('id').last()
+        serializer = self.get_serializer_class()(atividades_complementares)
+        return Response(serializer.data)
+
 
 class InstituicaoViewSet(viewsets.ModelViewSet):
     queryset = models.Instituicao.objects.all()
@@ -46,4 +52,12 @@ class CategoriaAtividadeComplementarViewSet(viewsets.ModelViewSet):
 
 class AtividadeComplementarViewSet(viewsets.ModelViewSet):
     queryset = models.AtividadeComplementar.objects.all()
-    serializer_class = serializers.AtividadeComplementar
+    serializer_class = serializers.AtividadeComplementarSerializer
+
+
+class EmpresaViewSet(viewsets.ModelViewSet):
+    queryset = models.Empresa.objects.all()
+    serializer_class = serializers.EmpresaSerializer
+
+
+
