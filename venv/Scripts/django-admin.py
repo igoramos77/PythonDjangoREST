@@ -1,4 +1,4 @@
-#!e:\projetos\universidade de vassouras\5 periodo\lab. frameworks (python)\degreevalidate\venv\scripts\python.exe
+#!c:\engenharia de software\5º período\empreendedorismo e inovação\summa\pythondjangorest\venv\scripts\python.exe
 from django.core import management
 
 if __name__ == "__main__":
