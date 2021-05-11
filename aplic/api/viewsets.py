@@ -3,13 +3,13 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import mixins
 
-from aplic.api import serializers
+from aplic.api.serializers import *
 from aplic import models
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = models.Usuario.objects.all()
-    serializer_class = serializers.UsuarioSerializer
+    serializer_class = UsuarioSerializer
 
 
 class AlunoViewSet(
@@ -21,7 +21,7 @@ class AlunoViewSet(
     viewsets.GenericViewSet
 ):
     queryset = models.Aluno.objects.all()
-    serializer_class = serializers.AlunoSerializer
+    serializer_class = AlunoSerializer
 
     @action(methods=['get'], detail=True)
     def atividades_complementares(self, request, pk=None):
@@ -32,32 +32,32 @@ class AlunoViewSet(
 
 class InstituicaoViewSet(viewsets.ModelViewSet):
     queryset = models.Instituicao.objects.all()
-    serializer_class = serializers.InstituicaoSerializer
+    serializer_class = InstituicaoSerializer
 
 
 class CampusViewSet(viewsets.ModelViewSet):
     queryset = models.Campus.objects.all()
-    serializer_class = serializers.CampusSerializer
+    serializer_class = CampusSerializer
 
 
 class CursoViewSet(viewsets.ModelViewSet):
     queryset = models.Curso.objects.all()
-    serializer_class = serializers.CursoSerializer
+    serializer_class = CursoSerializer
 
 
 class CategoriaAtividadeComplementarViewSet(viewsets.ModelViewSet):
     queryset = models.CategoriaAtividadeComplementar.objects.all()
-    serializer_class = serializers.CategoriaAtividadeComplementarSerializer
+    serializer_class = CategoriaAtividadeComplementarSerializer
 
 
 class AtividadeComplementarViewSet(viewsets.ModelViewSet):
     queryset = models.AtividadeComplementar.objects.all()
-    serializer_class = serializers.AtividadeComplementarSerializer
+    serializer_class = AtividadeComplementarSerializer
 
 
 class EmpresaViewSet(viewsets.ModelViewSet):
     queryset = models.Empresa.objects.all()
-    serializer_class = serializers.EmpresaSerializer
+    serializer_class = EmpresaSerializer
 
 
 

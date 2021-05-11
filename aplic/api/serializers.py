@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from aplic import models
+from rest_framework import serializers
 
 
 class EmpresaSerializer(serializers.ModelSerializer):
@@ -11,8 +10,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Usuario
-        fields = '__all__'
+        fields = ('id', 'email', 'nome')
 
 
 class CursoSerializer(serializers.ModelSerializer):
