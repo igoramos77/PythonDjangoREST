@@ -10,6 +10,7 @@ class EmpresaSerializer(serializers.ModelSerializer):
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
+        model = models.Usuario
         fields = ('id', 'email', 'nome')
 
 
